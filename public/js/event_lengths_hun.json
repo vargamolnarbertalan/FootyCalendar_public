@@ -1,0 +1,11 @@
+[  
+    {"id" : 13, "length":105, "name":"Futball"},  
+    {"id" : 21, "length":120, "name":"Kosárlabda"}, 
+    {"id" : 17, "length":150, "name":"Jégkorong"}, 
+    {"id" : 20, "length":90, "name":"Kézilabda"}, 
+    {"id" : 39, "length":90, "name":"Vízilabda"}, 
+    {"id" : 30, "length":90, "name":"Röplabda"}, 
+    {"id" : 3, "length":180, "name":"Amerikai futball"}, 
+    {"id" : 7, "length":180, "name":"Baseball"}, 
+    {"id" : 12, "length":90, "name":"Floorball"}
+]

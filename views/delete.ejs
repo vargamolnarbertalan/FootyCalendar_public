@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>Delete account | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+    <div class="container">
+        <div class="back-container">
+            <button class="btn" onclick="history.back()">BACK</button>
+        </div>
+        <h1>Delete your account</h1>
+        <form id="deleteform">
+            <input class="gen-text non-table" type="password" id="pw" placeholder="Enter your password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                required>
+            <button class="btn small-btn non-table" type="submit">Confirm deletion</button>
+        </form>
+
+    </div>
+
+    <%- include('footer.ejs') %>
+        <div id="result"><br></div>
+</body>
+
+<script>
+    $(document).ready(function() {
+
+        // When the form is submitted
+        $("#deleteform").submit(function(event) {
+            startProgress()
+                // Prevent the default form submission
+            event.preventDefault()
+            const pw = $('#pw').val()
+            $.ajax({
+                type: "POST",
+                url: "/delete-account",
+                data: {
+                    'pw': pw
+                },
+                success: function(data, status, xhr) {
+                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                    $("#result").css("color", "rgb(144, 255, 110)")
+                    $("#result").text(xhr.responseText)
+                    displayResult()
+                    stopProgress()
+                    location.href = "/login"
+                },
+                error: function(xhr, status, error) {
+                    $("#result").css("color", "rgb(255, 94, 94)")
+                    $("#result").text("Error: " + xhr.responseText)
+                    displayResult()
+                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                    stopProgress()
+                }
+            })
+        })
+    })
+</script>
+
+</html>

@@ -1,0 +1,22 @@
+[
+    { "id": 12, "name": "AUS" },
+    { "id": 10, "name": "BRA" },
+    { "id": 2, "name": "CRO" },
+    { "id": 7, "name": "CZE/SVK" },
+    { "id": 13, "name": "DEN" },
+    { "id": 18, "name": "FIN" },
+    { "id": 6, "name": "FRA" },
+    { "id": 15, "name": "GER" },
+    { "id": 11, "name": "HEL" },
+    { "id": 17, "name": "HUN" },
+    { "id": 9, "name": "POR" },
+    { "id": 8, "name": "ROM" },
+    { "id": 3, "name": "SER" },
+    { "id": 4, "name": "SVN" },
+    { "id": 19, "name": "SWE" },
+    { "id": 5, "name": "TUR" },
+    { "id": 16, "name": "UK" },
+    { "id": 1, "name": "UK/IRL" },
+    { "id": 14, "name": "UKR" }
+
+]

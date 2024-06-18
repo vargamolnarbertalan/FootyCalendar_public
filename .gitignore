@@ -1,0 +1,8 @@
+node_modules
+calendar.ics
+.env
+.cache
+.vscode
+Dockerfile
+.dockerignore
+social

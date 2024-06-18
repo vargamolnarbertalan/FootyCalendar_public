@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>Release notes | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+
+    <div class="container patch_notes">
+        <div class="back-container">
+            <button class="btn" onclick="history.back()">BACK</button>
+        </div>
+        <h1>Footy Calendar<br>Release Notes</h1>
+        <div class="patch_holder">
+            <h2>Release v1.0.0</h2>
+            <div class="dateclass">2024. 03. 29.</div>
+            <div>Footy Calendar has been released!</div>
+            <ul>
+                <li>UPGRADE: Added donation page. Accessible from the footer on the bottom of each Footy page.</li>
+                <li>REWORK: Upon sending a feedback the owner will be notified, and if the sender is logged in, their email associated with their Footy account will be sent with the feedback so they can be contacted via email regarding the feedback.</li>
+                <li>REWORK: Version numbering display reworked on backend.</li>
+                <li>REWORK: Minor backend adjustment to how the loading animation behaves.</li>
+                <li>FIXED ISSUE: Premium page's description was unclear.</li>
+                <li>FIXED ISSUE: Text is too close to the edge of the screen on some mobile devices.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.18.3 OPEN BETA</h2>
+            <div class="dateclass">2024. 03. 17.</div>
+            <div>Hotfix</div>
+            <ul>
+                <li>FIXED ISSUE: Username input field will be blank when returning to dasboard from other pages via the back button in Safari browser.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.18.2 OPEN BETA</h2>
+            <div class="dateclass">2024. 03. 12.</div>
+            <div>Hotfix</div>
+            <ul>
+                <li>FIXED ISSUE: When registering a new account it will show up as linked to a Google account on the dashboard.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.18.1 OPEN BETA</h2>
+            <div class="dateclass">2024. 02. 26.</div>
+            <div>Modular frontend code</div>
+            <ul>
+                <li>UPGRADE: Added more meta headers to the site for better link sharing experience.</li>
+                <li>Modified frontend code for simpler structure in order to implement new things faster in the future.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.18.0 OPEN BETA</h2>
+            <div class="dateclass">2024. 02. 26.</div>
+            <div>New server</div>
+            <ul>
+                <li>UPGRADE: Server upgraded. 3x faster runtime reached.</li>
+                <li>Process to add Google ads to site started.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.7 OPEN BETA</h2>
+            <div class="dateclass">2024. 02. 25.</div>
+            <div>Force refresh bugfix</div>
+            <ul>
+                <li>FIXED ISSUE: Upon executing "manually force refresh" event, there will be an error message even after a successful result.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.6 OPEN BETA</h2>
+            <div class="dateclass">2024. 02. 03.</div>
+            <div>Asynchronous operation fixes</div>
+            <ul>
+                <li>FIXED ISSUE: When trying to execute some operations such as force refreshing a calendar, the app throws an error.</li>
+                <li>Please note: Since last patch, Google approved Footy Calendar as a safe application. So no more "This app is not verified" warning message when linking Footy Calendar account to a Google account.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.5 OPEN BETA</h2>
+            <div class="dateclass">2024. 01. 19.</div>
+            <div>Google API Services User Data Policy</div>
+            <ul>
+                <li>Added Google API Services User Data Policy disclosure to home page.</li>
+                <li>FIXED ISSUE: "Forgot password | Learn more" texts display incorrectly on some mobile devices.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.4 OPEN BETA</h2>
+            <div class="dateclass">2024. 01. 19.</div>
+            <div>Hotfix</div>
+            <ul>
+                <li>FIXED ISSUE: Search result confirmation dialog box does not show up when trying to register a new account.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.3 OPEN BETA</h2>
+            <div class="dateclass">2024. 01. 17.</div>
+            <div>Optimalization</div>
+            <ul>
+                <li>Major performance upgrade achieved via conception change.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.2 OPEN BETA</h2>
+            <div class="dateclass">2024. 01. 17.</div>
+            <div>Optimalization</div>
+            <ul>
+                <li>Minimal performance upgrade through code modification.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.1 OPEN BETA</h2>
+            <div class="dateclass">2024. 01. 08.</div>
+            <div>Hotfix</div>
+            <ul>
+                <li>FIXED ISSUE: App crashing when trying to perform Google-related actions.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.17.0 OPEN BETA</h2>
+            <div class="dateclass">2024. 01. 08.</div>
+            <div>Added home page and region selector, API 2.0, support for new sports</div>
+            <ul>
+                <li>Added home page including a description of the application and links to terms & conditions and privacy policy to meet Google's guidelines.</li>
+                <li>Added support for futsal, tennis, darts, snooker.</li>
+                <li>Added region selector to set TV preferences.</li>
+                <li>Tweaked layout fo better user experience especially on mobile devices.</li>
+                <li>All text on the app's user interface is now in English.</li>
+                <li>Reworked API which is much more reliable and flexible now.</li>
+                <li>Server-side code has been modulated in order to fix issues faster in the future.</li>
+                <li>FIXED ISSUE: Some buttons have underlined font style when hovering over them.</li>
+                <li>FIXED ISSUE: If user had too long name, text would go out of desired boundaries.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.16.3 OPEN BETA</h2>
+            <div class="dateclass">2023. 12. 13.</div>
+            <div>Frontend improvements</div>
+            <ul>
+                <li>FIXED ISSUE: Layout is broken in Firefox.</li>
+                <li>FIXED ISSUE: Some elements are displayed differently across different browsers.</li>
+                <li>UPGRADE: New font, improved spacing and other minor design tweaks.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.16.2 OPEN BETA</h2>
+            <div class="dateclass">2023. 12. 11.</div>
+            <div>Security improvement & bug fixes</div>
+            <ul>
+                <li>UPGRADE: Modified backend code for better database security.</li>
+                <li>FIXED ISSUE: You can serach for a team / competition with less than 2 characters entered.</li>
+                <li>FIXED ISSUE: Incorrect style when hovering over a disabled delete calendar button.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.16.1 OPEN BETA</h2>
+            <div class="dateclass">2023. 12. 07.</div>
+            <div>Database hotfix</div>
+            <ul>
+                <li>Invalid query format fixed. (ER_BAD_FIELD_ERROR on UI)</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.16.0 OPEN BETA</h2>
+            <div class="dateclass">2023. 12. 06.</div>
+            <div>Dedicated server</div>
+            <ul>
+                <li>Application has been deployed on a dedicated server, running 24/7.</li>
+                <li>Footy Calendar service is now available at footycalendar.com.</li>
+                <li>Further security improvements, such as implementing HTTPS.</li>
+                <li>Auto-deployment for further updates implemented.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.15.0 OPEN BETA</h2>
+            <div class="dateclass">2023. 11. 22.</div>
+            <div>Structural changes</div>
+            <ul>
+                <li>Dashboard reworked, focusing on user account settings.</li>
+                <li>New page added to manage calendars, this means the app supports multiple calendars now.</li>
+                <li>Major restructuring of backend database.</li>
+                <li>Added premium system.</li>
+                <li>Added email system.</li>
+                <li>Fixed various spelling errors.</li>
+                <li>Postponed events won't give an error from now on.</li>
+                <li>From now on a Google account can only be linked to one Footy Calendar account at a time.</li>
+                <li>Various UI changes.</li>
+                <li>Added delete calendar button to dashboard.</li>
+                <li>Database moved to a separate server from the main service for better security.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.14.1 BETA</h2>
+            <div class="dateclass">2023. 10. 30.</div>
+            <div>Bug fixes & Small upgrades</div>
+            <ul>
+                <li>When trying to add matches of a team that has no upcoming games, the application should display a warning.</li>
+                <li>Reworked UI disabling while there is an ongoing progress such as database queries.</li>
+                <li>Server now handles routes that does not exist.</li>
+                <li>Each page now has a unique title in browser for better navigation.</li>
+                <li>Persistent server logging implemented.</li>
+                <li>Backend code for sports and google colors reworked.</li>
+                <li>Edit my account button shouldn't be disabled by default, only when modifying team/competiton or sports field data.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.14.0 BETA</h2>
+            <div class="dateclass">2023. 10. 06.</div>
+            <div>New features & bug fixes</div>
+            <ul>
+                <li>Added support for various sports, implemented team / competition and sport selector module.</li>
+                <li>Starting this release, your browser remembers your logged in state via cookies.</li>
+                <li>Account deletion feature added</li>
+                <li>Team names brought to the front of the calendar event's title for better readability on small displays.</li>
+                <li>Error/success message box design fix. (Bright blue border not showing)</li>
+                <li>UI update: placeholder for favorite team should have said team / competition, because the app supports competitions too since the beginning.</li>
+                <li>On occasions the calendar event would feature an empty TV attribute.</li>
+                <li>Occasional missing competition name fixed.</li>
+                <li>If a match only had a date without time, it would crash the server.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.13.2 BETA</h2>
+            <div class="dateclass">2023. 09. 29.</div>
+            <div>Bug fixes & design update</div>
+            <ul>
+                <li>When changing username, dashboard title only updated upon page reload, but should be updated immediately after saving.</li>
+                <li>Code simplifying to optimize performance.</li>
+                <li>Upon sending a feedback now you stay on the same page and see a server response instead of being redirected.</li>
+                <li>Even when not signed in, you can access an empty dashboard sometimes.</li>
+                <li>Revamped server response message display.</li>
+                <li>Footer design updated for better visibility.</li>
+                <li>Back button updated to be more aligned with overall layout.</li>
+                <li>Progress bar updated for better visibility.</li>
+                <li>Set new password query server crash fixed.</li>
+                <li>All buttons are now disabled during server communication to prevent conflicting queries.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.13.1 BETA</h2>
+            <div class="dateclass">2023. 09. 26.</div>
+            <div>Bug fix</div>
+            <ul>
+                <li>Google API refresh token forced re-request implemented for users who disabled then re-enabled authentication.</li>
+            </ul>
+        </div>
+        <div class="patch_holder">
+            <h2>Release v0.13.0 BETA</h2>
+            <div class="dateclass">2023. 09. 25.</div>
+            <div>Initial closed BETA release.</div>
+            <ul>
+                <li>Google Calendar linking implemented</li>
+                <li>Downloadable calendar in .ics format for every mainstream calendar app</li>
+                <li>User system implemented</li>
+                <li>Custom API for 3rd party sports database implemented</li>
+                <li>Feedback system implemented</li>
+                <li>Secret admin-level HTTP API added</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <%- include('footer.ejs') %>
+        <div id="result"></div>
+</body>
+
+<script>
+    $(document).ready(function() {
+    })
+</script>
+
+</html>

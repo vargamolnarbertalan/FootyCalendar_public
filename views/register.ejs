@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>Register | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+    <div class="container">
+        <h1>Register for Footy Calendar</h1>
+        <form id="regform">
+            <input class="gen-text non-table" type="text" id="username" placeholder="Username" required autocomplete="on">
+            <input class="gen-text non-table" type="email" id="email" placeholder="Email" required>
+            <input class="gen-text non-table" type="email" id="email2" placeholder="Email again" required>
+            <input class="gen-text non-table" type="password" id="pw" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
+            <input class="gen-text non-table" type="password" id="pw2" placeholder="Password again" required>
+            <select style="color: rgb(0, 0, 0); font-weight: bold;" class="reg-field2 gen-text sport-selector-reg non-table" data-n="0" id="sport-selector0" title="sport-selector" required>
+            </select>
+            <input class="favorite-team non-table" id="team0" data-n="0" placeholder="Favorite Team / Competition" required>
+
+            <button id="team-search-btn" class="btn small-btn non-table" type="button">
+                <img class="logo" alt="team_search_button_img" src="img/search.png"><div class="span1">SEARCH FOR TEAM / COMPETITION</div>
+            </button>
+
+            <button class="btn small-btn non-table" id="save-btn0" data-n="0" type="submit">Register</button>
+        </form>
+        <div class="reminder">If you already have an account <a href="/login">log in</a> now!
+            <br> Or <a href="/home">learn more</a> about the app.
+        </div>
+    </div>
+
+    <%- include('footer.ejs') %>
+        <div id="result"><br></div>
+
+        <!-- Custom Confirm Dialog -->
+        <div class="custom-confirm" id="customConfirm">
+            <div class="confirm-content">
+                <h2>Confirmation</h2>
+                <br>
+                <br>
+                <pre><p id="question">Are you sure you want to proceed?</p></pre>
+                <br>
+                <br>
+                <button id="conf-yes" onclick="confirmAction()">Yes</button>
+                <button id="conf-no" onclick="closeConfirm()">No</button>
+
+            </div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
+
+</body>
+
+<script>
+    $(document).ready(function() {
+        startProgress()
+
+        let dropdown = $('#sport-selector0')
+        dropdown.empty()
+            //dropdown.append('<option selected="true" disabled>Choose sport</option>')
+
+        const url = '/js/event_lengths.json'
+            // Populate dropdown with list of provinces
+        $.getJSON(url, function(data) {
+            $.each(data, function(key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry.id).text(entry.name))
+            })
+        })
+
+        stopProgress()
+
+        dropdown.prop('selectedIndex', 0)
+
+        // When the form is submitted
+        $("#regform").submit(function(event) {
+            startProgress()
+                // Prevent the default form submission
+            var userError = {
+                msg: "",
+                triggered: false
+            }
+            event.preventDefault();
+            const username = $('#username').val()
+            const token = $('#token').val()
+            const team = $('#team0').val()
+            const email = $('#email').val()
+            const email2 = $('#email2').val()
+            const pw = $('#pw').val()
+            const pw2 = $('#pw2').val()
+            const sportID = $('#sport-selector0').val()
+
+            if (email != email2) {
+                userError.msg = "Email and email confirmation fields have to match"
+                userError.triggered = true
+            }
+
+            if (pw != pw2 && !userError.triggered) {
+                userError.msg = "Password and password confirmation fields have to match"
+                userError.triggered = true
+            }
+
+            if (!userError.triggered) {
+                $.ajax({
+                    type: "POST",
+                    url: "/register_user",
+                    data: {
+                        'username': username,
+                        'token': token,
+                        'team': team,
+                        'email': email,
+                        'pw': pw,
+                        'sportID': sportID
+                    },
+                    success: function(data, status, xhr) {
+                        console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                        stopProgress()
+                        location.href = "/login"
+                    },
+                    error: function(xhr, status, error) {
+                        $("#result").css("color", "rgb(255, 94, 94)")
+                        $("#result").text("Error: " + xhr.responseText)
+                        displayResult()
+                        console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                        stopProgress()
+                    }
+                })
+            } else {
+                $("#result").css("color", "rgb(255, 94, 94)")
+                $("#result").text("Error: " + userError.msg)
+                displayResult()
+                stopProgress()
+            }
+        })
+
+        $('#team-search-btn').on("click", async function(e) {
+            const queryRes = await searchInit(0)
+        })
+
+        $('#team0').on('input', function(e) {
+            $("#save-btn0").prop("disabled", true)
+        })
+
+        $('#sport-selector0').on('change', function(e) {
+            $("#save-btn0").prop("disabled", true)
+        })
+
+    })
+</script>
+
+</html>

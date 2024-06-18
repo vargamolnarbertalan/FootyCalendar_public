@@ -1,0 +1,515 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@font-face {
+    font-family: 'Changa-regular';
+    src: url('../font/Changa/static/Changa-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Changa-bold';
+    src: url('../font/Changa/static/Changa-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: bold;
+}
+
+a:link {
+    color: #007bff;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #007bff;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #007bff;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #007bff;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+body {
+    font-family: 'Changa-regular';
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    /* Replaced -webkit-box-pack */
+    align-items: center;
+    /* Replaced -webkit-box-align */
+    margin-top: 20px;
+    margin-bottom: 81px;
+}
+
+div,
+button,
+input,
+select {
+    font-family: 'Changa-regular';
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    padding-top: 45px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 45px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+}
+
+h1 {
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 25px;
+    word-wrap: break-word;
+}
+
+table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+table tr {
+    height: 1px;
+}
+
+table tr td {
+    padding: 8px;
+    height: 100%;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.gen-text,
+.favorite-team {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 15px;
+    text-align: center;
+}
+
+.team,
+.user {
+    font-weight: 400;
+}
+
+.gen-text:focus,
+.favorite-team:focus {
+    border-color: #007bff;
+}
+
+.dash-field {
+    width: 100%;
+    display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.dash-field2 {
+    width: 97%;
+    padding: 0% 1.5%;
+    height: 100%;
+}
+
+.btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    display: block;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.btn:disabled {
+    background-color: #444444;
+    cursor: default;
+    color: rgb(175, 175, 175);
+}
+
+.btn:disabled img {
+    opacity: 60%;
+}
+
+.small-btn {
+    width: auto;
+    display: block;
+    margin: auto;
+}
+
+.small-btn img {
+    max-width: 50px;
+    max-height: 50px;
+    width: auto;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+#result {
+    position: fixed;
+    z-index: 100;
+    bottom: 71px;
+    background-color: #1f1f1f;
+    padding: 10px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0;
+    border-color: #80beff;
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 5px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+select option {
+    line-height: 40px;
+    font-weight: bold;
+}
+
+.fixed-bottom {
+    text-align: center;
+    background-color: #d3d3d3;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin: 0;
+    border-top: #333 3px solid;
+}
+
+.btn img.logo {
+    height: 38px;
+    margin-bottom: 3px;
+    margin-top: 7px;
+}
+
+#curr-email-div {
+    margin-bottom: 10px;
+}
+
+#curr-email {
+    color: #000853;
+}
+
+.btn .span1 {
+    font-size: 16px;
+}
+
+#status {
+    color: rgb(170, 0, 0);
+    font-weight: bold;
+}
+
+.selector {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    width: 100%;
+    height: 60px;
+    margin: 0;
+}
+
+input {
+    display: block;
+    margin: auto;
+}
+
+.sport-selector-reg {
+    width: 80%;
+    -ms-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+textarea {
+    resize: none;
+    font-family: 'Changa-regular';
+}
+
+#content {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+#content:focus {
+    border-color: #007bff;
+}
+
+.back-container {
+    position: absolute;
+    left: 15px;
+    top: 0px;
+}
+
+.back-container button {
+    margin: 0;
+    padding: 5px 15px;
+}
+
+h2 {
+    text-align: left;
+}
+
+.patch_notes div,
+.home div {
+    text-align: left;
+}
+
+.premium div {
+    text-align: left;
+}
+
+.footer-separator {
+    margin-left: 10px;
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.dateclass,
+.miscclass {
+    font-style: italic;
+    color: rgb(56, 56, 56);
+    margin-left: 0;
+}
+
+.reminder {
+    width: 100%;
+    margin: 10px auto;
+}
+
+#delete-btn,
+.delete-calendar {
+    background-color: #5f0000;
+}
+
+#delete-btn:hover,
+.delete-calendar:enabled:hover {
+    background-color: #5f0000;
+    -webkit-filter: brightness(70%);
+    filter: brightness(70%);
+}
+
+.delete-calendar:disabled:hover {
+    background-color: #444444;
+}
+
+#mng-calendar-btn {
+    /*
+box-sizing: border-box;
+-moz-box-sizing: border-box;
+-webkit-box-sizing: border-box;
+border: 5px solid rgb(2, 0, 143);
+*/
+}
+
+hr.divider {
+    width: 80%;
+    text-align: center;
+    height: 3px;
+    color: rgb(27, 27, 27);
+    background-color: rgb(27, 27, 27);
+    margin-top: 45px;
+    margin-bottom: 45px;
+}
+
+.warning {
+    margin: auto;
+    width: 80%;
+}
+
+.non-table {
+    margin-bottom: 15px;
+}
+
+button.non-table {
+    width: 30%;
+}
+
+#purchase-btn {
+    background-image: -webkit-gradient(linear, left bottom, right top, from(rgb(63, 63, 63)), to(rgb(104, 104, 104)));
+    background-image: -o-linear-gradient(bottom left, rgb(63, 63, 63), rgb(104, 104, 104));
+    background-image: linear-gradient(to top right, rgb(63, 63, 63), rgb(104, 104, 104));
+}
+
+#purchase-btn:enabled:hover {
+    background-image: none;
+    background-color: black;
+    color: white;
+}
+
+#purchase-btn:disabled:hover {
+    background-image: -webkit-gradient(linear, left bottom, right top, from(rgb(63, 63, 63)), to(rgb(104, 104, 104)));
+    background-image: -o-linear-gradient(bottom left, rgb(63, 63, 63), rgb(104, 104, 104));
+    background-image: linear-gradient(to top right, rgb(63, 63, 63), rgb(104, 104, 104));
+    color: default;
+}
+
+h2 {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.patch_holder div,
+.info_holder div {
+    margin-left: 5px;
+}
+
+ul {
+    margin-left: 15px;
+    margin-bottom: 30px;
+    margin-top: 15px;
+    margin-right: 15px;
+    list-style-type: square;
+    list-style-position: inside;
+    text-align: left;
+}
+
+.non-table#team-search-btn {
+    width: 60%;
+}
+
+#donate-btn, #revo-btn {
+    border: 1px solid #ff003d;
+    background-color: white;
+    color: #ff003d;
+}
+
+#donate-btn:hover, #revo-btn:hover {
+    background-color: #ff003d;
+    color: white;
+}
+
+#revoqr {
+    width: 65%;
+}
+
+#revo-btn {
+    width: 65%;
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        margin-top: 0;
+    }
+    .container {
+        max-width: 100%;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .small-btn {
+        width: 60%;
+    }
+    .reminder {
+        width: 95%;
+    }
+    button.non-table {
+        width: 60%;
+    }
+    .custom-alert,
+    .custom-confirm {
+        width: 70%;
+    }
+    table tr td {
+        padding: 3px;
+    }
+}
+
+#loadOverlay {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-image: url("/img/loading.gif");
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    z-index: -100;
+}
+
+
+/* Add this at the end of your existing CSS file */
+
+
+/* Custom Alert and Confirm Dialog Styles */
+
+.custom-alert,
+.custom-confirm {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+    word-wrap: break-word;
+}
+
+.alert-content,
+.confirm-content {
+    text-align: center;
+}
+
+.custom-confirm button {
+    margin-top: 10px;
+}
+
+
+/* Show the overlay when the alert or confirm is active */
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+}

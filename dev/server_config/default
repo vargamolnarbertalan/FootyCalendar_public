@@ -1,0 +1,26 @@
+##location: /etc/nginx/sites-available
+
+server {
+    listen 80;
+    server_name footycalendar.com;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name footycalendar.com;
+
+    ssl_certificate /etc/letsencrypt/live/footycalendar.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/footycalendar.com/privkey.pem;
+
+    # Additional SSL configurations (optional, based on your preferences)
+
+    location / {
+        proxy_pass http://localhost:443;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}

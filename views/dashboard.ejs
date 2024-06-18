@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>Dashboard | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+    <div class="container">
+        <h1><span id="dashname"><%=ejsdata.dashname%></span>'s dashboard</h1>
+        <table>
+            <colgroup>
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+            </colgroup>
+            <!-- <form id="editform" autocomplete="off"> -->
+            <tr>
+                <td colspan="4">
+                    <input class="dash-field gen-text user" type="text" id="username" placeholder="Username" value="<%=ejsdata.dashname%>" required autocomplete="off" style="text-align: center;">
+                </td>
+                <td colspan="4">
+                    <select style="color: rgb(0, 0, 0); font-weight: bold;" class="dash-field2 gen-text selector" id="region-selector" title="region-selector">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <button id="edit-btn" class="btn" type="button">
+                        <div class="span1">UPDATE NAME & TV REGION</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <button id="pw-btn" class="btn" type="button">
+                    <div class="span1">SET NEW PASSWORD</div>
+                    </button>
+                </td>
+                <td colspan="4">
+                    <button id="email-btn" class="btn" type="button">
+                    <div class="span1">SET NEW EMAIL</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <button id="auth-btn" class="btn" class="btn_changing" type="button">
+                        <img class="logo" alt="auth_toggle_button_img" src="img/Google-Calendar-Logo.png"><div class="span1">AUTH ON/OFF</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <button id="mng-calendar-btn" class="btn" type="button">
+                        <img class="logo" alt="edit_button_img" src="img/edit.png"><div class="span1">MANAGE MY CALENDARS</div>
+                    </button>
+                </td>
+
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <button id="purchase-btn" class="btn" class="btn_changing" type="button" style="text-align: center;">
+                        <img class="logo" alt="purchase_button_img" src="img/footy_calendar_keyart_gold.png"><div class="span1">PREMIUM</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <button id="logout-btn" class="btn" type="button">
+                        <img class="logo" alt="logout_button_img" src="img/logout.png"><div class="span1">LOG OUT</div>
+                    </button>
+                </td>
+                <td colspan="2">
+                    <button id="delete-btn" class="btn" type="button">
+                        <img class="logo" alt="delete_button_img" src="img/delete.png"><div class="span1">DELETE ACCOUNT</div>
+                    </button>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <%- include('footer.ejs') %>
+
+        <div id="result"><br></div>
+
+</body>
+
+<script>
+    function ajaxLinkCheck(callback) {
+        $.ajax({
+            type: "GET",
+            url: "/get-userinfo",
+            success: function(response) {
+                //$("#dashname").text(response.UserName)
+                $("#username").val(response.UserName)
+                $('#region-selector').val(response.region).change()
+                $("#edit-btn").prop("disabled", false)
+                if (response.refresh_token != "undefined") { // linked
+
+                    $("#auth-btn").css("background-color", "red")
+                    $("#auth-btn").hover(function() {
+                        $(this).css("filter", "brightness(70%)")
+                    }, function() {
+                        $(this).css("filter", "brightness(100%)")
+                    })
+                    $("#auth-btn div").text("UNLINK FROM GOOGLE CALENDAR")
+
+                    $('#auth-btn').on('click', function() {
+                        startProgress()
+                        $.ajax({
+                            type: "GET",
+                            url: "/unlink-google",
+                            success: function(data, status, xhr) {
+                                stopProgress()
+                                location.reload()
+                            },
+                            error: function(xhr, status, error) {
+                                stopProgress()
+                                console.log(error)
+                            }
+                        })
+                    })
+
+                } else { // not linked
+
+                    $("#auth-btn").css("background-color", "green")
+                    $("#auth-btn").hover(function() {
+                        $(this).css("filter", "brightness(70%)")
+                    }, function() {
+                        $(this).css("filter", "brightness(100%)")
+                    })
+                    $("#auth-btn div").text("LINK TO GOOGLE CALENDAR")
+
+
+                    $('#auth-btn').on('click', function() {
+                        startProgress()
+                        $.ajax({
+                            type: "POST",
+                            url: "/link-google",
+                            success: function(data, status, xhr) {
+                                stopProgress()
+                                console.log("client data: " + data)
+                                location.replace(data)
+                            },
+                            error: function(xhr, status, error) {
+                                stopProgress()
+                                console.log(error)
+                            }
+                        })
+                    })
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText)
+                $("#result").text("An error occurred: " + error)
+                displayResult()
+            }
+        })
+        callback()
+    }
+
+    async function regionJSONLoader(url, obj) {
+        await $.getJSON(url, async function(data) {
+            await $.each(data, function(key, entry) {
+                obj.push({
+                    regionID: entry.id,
+                    regionName: entry.name
+                })
+            })
+        })
+    }
+
+    function ajaxGetPremium() {
+        return new Promise((resolve, reject) => {
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "/get-premium",
+                success: function(response) {
+                    console.log(response)
+                    return resolve(response)
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText)
+
+                    return resolve(status)
+                }
+            })
+
+        })
+
+
+    }
+
+    $(document).ready(async function() {
+
+        startProgress()
+
+        var regionObject = []
+
+        // SELECTOR FILL
+
+        const region_dropdown = $(`#region-selector`)
+        await regionJSONLoader('/js/regions.json', regionObject)
+        region_dropdown.empty()
+        for (var j = 0; j < regionObject.length; j++) {
+            region_dropdown.append($('<option></option>').attr('value', regionObject[j].regionID).text(regionObject[j].regionName))
+        }
+
+        await ajaxLinkCheck(function() {
+            stopProgress()
+        })
+
+        // When the form is submitted
+        $("#edit-btn").on("click", function() {
+            startProgress()
+                // Prevent the default form submission
+            const username = $('#username').val()
+            const region = $('#region-selector').val()
+            var userError = {
+                triggered: false,
+                msg: ""
+            }
+
+            if (username == "") {
+                userError.triggered = true
+                userError.msg = "Username field must not be blank!"
+            }
+            if (!userError.triggered) {
+                $.ajax({
+                    type: "POST",
+                    url: "/edit_user",
+                    data: {
+                        'username': username,
+                        'region': region
+                    },
+                    success: function(data, status, xhr) {
+                        // Handle the success response from the server
+                        $("#dashname").text(username)
+                        $("#result").css("color", "rgb(144, 255, 110)")
+                        $("#result").text(xhr.responseText)
+                        displayResult()
+                        console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                        stopProgress()
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors
+                        console.error(xhr.responseText)
+                        $("#result").css("color", "rgb(255, 94, 94)")
+                        $("#result").text("Error: " + xhr.responseText)
+                        displayResult()
+                        console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                        stopProgress()
+                    }
+                })
+            } else {
+                console.log(userError)
+                $("#result").css("color", "rgb(255, 94, 94)")
+                $("#result").text("Error: " + userError.msg)
+                displayResult()
+                stopProgress()
+            }
+
+        })
+
+        $('#logout-btn').on('click', function() {
+            startProgress()
+            $.ajax({
+                type: "GET",
+                url: "/logout_user",
+                success: function(data, status, xhr) {
+                    stopProgress()
+                    location.href = "/login"
+                },
+                error: function(xhr, status, error) {
+                    stopProgress()
+                }
+            })
+        })
+
+        $('#pw-btn').on('click', function() {
+            location.href = "/new_password"
+        })
+
+        $('#mng-calendar-btn').on('click', function() {
+            location.href = "/calendars"
+        })
+
+        $('#purchase-btn').on('click', async function() {
+            const query = await ajaxGetPremium()
+            if (query.hasPremium) {
+                //REDIRECT TO PREMIUM STATUS
+                location.href = "/premium_status"
+            } else {
+                //REDIRECT TO PREMIUM BUY AND DESCRIPTION
+                location.href = "/premium"
+            }
+        })
+
+        $('#email-btn').on('click', function() {
+            location.href = "/new_email"
+        })
+
+        $('#delete-btn').on('click', function() {
+            location.href = "/delete_account"
+        })
+
+    })
+</script>
+
+</html>

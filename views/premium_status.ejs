@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>My premium | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+    <div class="container">
+
+        <div class="back-container">
+            <button class="btn" onclick="history.back()">BACK</button>
+        </div>
+
+        <h1>My premium info</h1>
+        <div><span id="username"></span>'s premium is <span id="status">INACTIVE</span></div>
+        <div>Premium started: <span id="start"></span></div>
+        <div class="non-table">Premium will end: <span id="end"></span></div>
+
+        <button class="btn small-btn non-table" id="cancel-btn" type="button">CANCEL PREMIUM</button>
+
+
+    </div>
+
+    <%- include('footer.ejs') %>
+
+        <div id="result"><br></div>
+
+        <!-- Custom Confirm Dialog -->
+        <div class="custom-confirm" id="customConfirm">
+            <div class="confirm-content">
+                <h2>Confirmation</h2>
+                <br>
+                <br>
+                <p id="question">Are you sure you want to proceed?</p>
+                <br>
+                <br>
+                <button id="conf-yes" onclick="premiumConfirmAction()">Yes</button>
+                <button id="conf-no" onclick="premiumCloseConfirm()">No</button>
+
+            </div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
+
+</body>
+
+<script>
+    function ajaxGetPremium() {
+        return new Promise((resolve, reject) => {
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "/get-premium",
+                success: function(response) {
+                    stopProgress()
+                    return resolve(response)
+                },
+                error: function(xhr, status, error) {
+
+                    console.error(xhr.responseText)
+                    stopProgress()
+                    return resolve(status)
+                }
+            })
+
+        })
+
+
+    }
+
+    $(document).ready(async function() {
+        startProgress()
+
+        /*
+
+        UserID: "",
+        UserName: "", 
+        premiumID: "",
+        start_time: "", print
+        end_time: "", print
+        p_level: "",
+        hasPremium: false print (ACTIVE / INACTIVE)
+
+        */
+
+        const pQuery = await ajaxGetPremium()
+        $('#username').text(pQuery.UserName)
+        if (pQuery.hasPremium) {
+            $('#status').text("ACTIVE")
+            $('#status').css("color", "rgb(29, 158, 0)")
+        }
+
+        $('#start').text(pQuery.start_time)
+        $('#end').text(pQuery.end_time)
+
+        $("#cancel-btn").on("click", function() {
+            premiumOpenConfirm(`Are you sure you want to cancel premium membership?`, 'YES', 'KEEP PREMIUM', pQuery)
+
+
+        })
+    })
+</script>
+
+</html>

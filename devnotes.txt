@@ -1,0 +1,24 @@
+FOOTY CALENDAR
+
+:DEV
+
+- QOL: force refresht átdolgozni olyanra, hogy korábbi eventek megmaradjanak google naptárban (akár pl. eredményt beírva)
+
+:LONGTERM
+add formula 1, pro-wrestling
+matches helyett fixtures, sportágat írja calendar nevében
+player follow (csapatsportban)
+preload puppeteer / egyéb gyorsítás
+multiple lang support
+http api (pl előre elkészített link hozzáadja a dvtk meccseket)
+phone app
+mérkőzés időpont változás email/push noti
+beta.footycalendar.com
+
+KNOWN ISSUES
+
+FEATURE REQUEST
+
+
+docker build -t footycalendar:latest .
+docker run --name footy -d -p 9002:9002 --restart=always footycalendar

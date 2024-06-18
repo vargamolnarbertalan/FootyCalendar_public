@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>My calendars | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    </div>
+    <div class="container">
+        <div class="back-container">
+            <button class="btn" onclick="history.back()">BACK</button>
+        </div>
+        <h1><span id="dashname"></span>'s calendars</h1>
+    </div>
+
+    <%- include('footer.ejs') %>
+
+        <div id="result"><br></div>
+
+        <!-- Custom Alert Dialog -->
+        <div class="custom-alert" id="customAlert">
+            <div class="alert-content">
+                <h2>Alert!</h2>
+                <br>
+                <br>
+                <p>This is a custom alert message.</p>
+                <br>
+                <br>
+                <button onclick="closeAlert()">OK</button>
+            </div>
+        </div>
+
+        <!-- Custom Confirm Dialog -->
+        <div class="custom-confirm" id="customConfirm">
+            <div class="confirm-content">
+                <h2>Confirmation</h2>
+                <br>
+                <br>
+                <pre><p id="question">Are you sure you want to proceed?</p></pre>
+                <br>
+                <br>
+                <button id="conf-yes" onclick="confirmAction()">Yes</button>
+                <button id="conf-no" onclick="closeConfirm()">No</button>
+
+            </div>
+        </div>
+
+        <div class="custom-confirm" id="customConfirm-caldel">
+            <div class="confirm-content">
+                <h2>Confirmation</h2>
+                <br>
+                <br>
+                <p id="question-caldel">Are you sure you want to proceed?</p>
+                <br>
+                <br>
+                <button id="conf-yes-caldel" onclick="caldelConfirmAction()">Yes</button>
+                <button id="conf-no-caldel" onclick="caldelCloseConfirm()">No</button>
+
+            </div>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay"></div>
+
+</body>
+
+<script>
+    var clientCalendars = []
+
+    function ajaxGetPremium() {
+        return new Promise((resolve, reject) => {
+
+            $.ajax({
+                type: "GET",
+                async: false,
+                url: "/get-premium",
+                success: function(response) {
+
+                    return resolve(response)
+                },
+                error: function(xhr, status, error) {
+
+                    console.error(xhr.responseText)
+
+                    return resolve(status)
+                }
+            })
+
+        })
+
+
+    }
+
+    async function ajaxGetCalendarInfo() {
+        $.ajax({
+            type: "GET",
+            async: false,
+            url: "/get-userinfo-calendars",
+            success: function(response) {
+                clientCalendars = response
+                $("#dashname").text(response.UserName)
+                    // APPEND
+                for (var i = 0; i < clientCalendars.calendars.length; i++) {
+
+
+
+                    $(".container").append(`
+        <table class="calendar_board${i}">
+            <colgroup>
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+            </colgroup>
+            <tr>
+                <td colspan="5">
+                    <input class="gen-text dash-field2 favorite-team team" id="team${i}" data-n="${i}" class="" type="text" placeholder="Favorite Team / Competition">
+                </td>
+                <td colspan="3">
+                    <button id="team-search-btn${i}" class="btn" data-n="${i}" type="button">
+                        <img class="logo" alt="team_search_button_img" src="img/search.png"><div class="span1">SEARCH</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <select style="color: rgb(0, 0, 0); font-weight: bold;" class="dash-field2 gen-text selector" id="sport-selector${i}" data-n="${i}" title="sport-selector">
+                    </select>
+                </td>
+            
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <select style="color: white; font-weight: bold;" class="dash-field2 gen-text selector color-selector" id="color-selector${i}" data-n="${i}" title="color-selector">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <button id="save-btn${i}" class="btn save-btn" data-n="${i}" type="button">
+                        <img class="logo" alt="edit_button_img" src="img/save.png"><div class="span1">SAVE CALENDAR SETTINGS</div>
+                    </button>
+                </td>
+                <td colspan="4">
+                    <button id="force-refresh-btn${i}" class="btn google-button-group" data-n="${i}" type="button">
+                        <img class="logo" alt="force_refresh_button_img" src="img/refresh.png"><div class="span1">MANUALLY REFRESH EVENTS</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <button id="calendar-live-btn${i}" class="btn google-button-group" data-n="${i}" class="btn_changing" type="button">
+                        <img class="logo" alt="calendar_live_button_img" src="img/footy_calendar_keyart_bw.png"><div class="span1">ADD MATCHES TO GOOGLE CALENDAR</div>
+                    </button>
+                </td>
+                <td colspan="2">
+                    <button id="download-btn${i}" class="btn" data-n="${i}" type="button">
+                        <img class="logo" alt="download_button_img" src="img/download.png"><div class="span1">DOWNLOAD .ics</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                  <button id="delete-calendar-btn${i}" class="delete-calendar btn" data-n="${i}" type="button">
+                        <img class="logo" alt="delete_calendar_button_img" src="img/delete.png"><div class="span1">DELETE CALENDAR</div>
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <hr class="divider">
+        `)
+
+
+
+
+
+
+                    if (i == response.calendars.length - 1) {
+                        $(".container").append(`<div class="ready"></div>`)
+                    }
+
+                    //APPEND ENDS
+
+                    $(`#team${i}`).val(response.calendars[i].team)
+
+                    $(`#team-search-btn${i}`).on("click", async function(e) {
+                        const queryRes = await searchInit($(this).attr("data-n"))
+                    })
+
+                    $(`#color-selector${i}`).on("change", function(e) {
+                        $(this).css("background-color", $(this).find(":selected").css("background-color"))
+                    })
+
+                    $(`#download-btn${i}`).on('click', function() {
+                        startProgress()
+                        const NTH = $(this).attr("data-n")
+                        const data = {
+                            team: clientCalendars.calendars[NTH].team,
+                            sportID: clientCalendars.calendars[NTH].sportID
+                        }
+                        fetch('/download-calendar', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(data)
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.blob()
+                                } else {
+                                    throw new Error('Failed to download file')
+                                }
+                            })
+                            .then(blob => {
+                                // Create a temporary link to trigger the file download
+                                const url = window.URL.createObjectURL(blob)
+                                const a = document.createElement('a')
+                                a.href = url
+                                a.download = 'footy_calendar.ics'; // Set the desired file name
+                                document.body.appendChild(a)
+                                a.click()
+                                window.URL.revokeObjectURL(url)
+                                stopProgress()
+                            })
+                            .catch(error => {
+                                console.error(error)
+                                stopProgress()
+                            })
+                    })
+
+                    $(`#team${i}`).on('input', function(e) {
+                        const NTH = $(this).attr("data-n")
+                        $(`#save-btn${NTH}`).prop("disabled", true)
+                    })
+
+                    $(`#sport-selector${i}`).on('change', function(e) {
+                        const NTH = $(this).attr("data-n")
+                        $(`#save-btn${NTH}`).prop("disabled", true)
+                    })
+
+                    $(`#save-btn${i}`).on('click', function() {
+                        const NTH = $(this).attr("data-n")
+                        startProgress()
+                        var calendarID = clientCalendars.calendars[NTH].calendarID
+                        var team = $(`#team${NTH}`).val()
+                        var sportID = $(`#sport-selector${NTH}`).val()
+                        var selected_color = $(`#color-selector${NTH}`).val()
+                        $.ajax({
+                            type: "POST",
+                            url: "/edit_calendar",
+                            async: true,
+                            data: {
+                                'calendarID': calendarID,
+                                'team': team,
+                                'sportID': sportID,
+                                'selected_color': selected_color,
+                                'descString': "team_" + clientCalendars.calendars[NTH].team + "_sport_" + clientCalendars.calendars[NTH].sportID + "_footycalendar"
+                            },
+                            success: function(data, status, xhr) {
+                                $("#result").css("color", "rgb(144, 255, 110)")
+                                $("#result").text(xhr.responseText)
+                                displayResult()
+                                    //REMOVE CURRENT CALENDAR
+                                stopProgress()
+                                location.reload()
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(xhr.responseText)
+                                $("#result").css("color", "rgb(255, 94, 94)")
+                                $("#result").text("Error: " + xhr.responseText)
+                                displayResult()
+                                stopProgress()
+                            }
+                        })
+                    })
+
+                    $(`#delete-calendar-btn${i}`).on('click', function() {
+                        const NTH = $(this).attr("data-n")
+                        caldelOpenConfirm(`Are you sure you want to delete this calendar?`, 'DELETE', 'KEEP CALENDAR', NTH)
+                    })
+                } // FOR ENDS
+
+                if (clientCalendars.calendars.length == 1) {
+                    $("#delete-calendar-btn0").prop("disabled", true)
+                }
+
+
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText)
+                $("#result").text("An error occurred: " + error)
+                displayResult()
+            }
+
+        })
+
+    }
+
+    async function ajaxHasLiveCalendar(callback) {
+
+        $.each(clientCalendars.calendars, function(i, item) {
+            $.ajax({
+                type: "POST",
+                async: true,
+                url: "/has-live-calendar",
+                data: {
+                    'descString': "team_" + item.team + "_sport_" + item.sportID + "_footycalendar",
+                },
+                success: function(data, status, xhr) {
+                    if (data) { // HAS LIVE CALENDAR
+                        $(`#calendar-live-btn${i}`).css("background-color", "red")
+                        $(`#calendar-live-btn${i}`).hover(function() {
+                            $(this).css("filter", "brightness(70%)")
+                        }, function() {
+                            $(this).css("filter", "brightness(100%)")
+                        })
+                        $(`#calendar-live-btn${i} div`).text("REMOVE MATCHES FROM GOOGLE CALENDAR")
+
+                        $(`#force-refresh-btn${i}`).on('click', function() {
+                            startProgress()
+                            const NTH = $(this).attr("data-n")
+
+                            $.ajax({
+                                type: "POST",
+                                async: true,
+                                url: "/force-refresh-events",
+                                data: {
+                                    'descString': "team_" + clientCalendars.calendars[NTH].team + "_sport_" + clientCalendars.calendars[NTH].sportID + "_footycalendar",
+                                    'team': $(`#team${NTH}`).val(),
+                                    'sportID': $(`#sport-selector${NTH}`).val(),
+                                    'selected_color': $(`#color-selector${NTH}`).val()
+                                },
+                                success: function(data, status, xhr) {
+                                    $("#result").css("color", "rgb(144, 255, 110)")
+                                    $("#result").text(xhr.responseText)
+                                    displayResult()
+                                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                                    stopProgress()
+                                },
+                                error: function(xhr, status, error) {
+                                    $("#result").css("color", "rgb(255, 94, 94)")
+                                    $("#result").text("Error: " + xhr.responseText)
+                                    displayResult()
+                                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                                    stopProgress()
+                                }
+                            })
+
+                        })
+
+                        $(`#calendar-live-btn${i}`).on('click', function() {
+                            const NTH = $(this).attr("data-n")
+                            startProgress()
+                            $.ajax({
+                                type: "POST",
+                                async: true,
+                                url: "/remove-events",
+                                data: {
+                                    'descString': "team_" + clientCalendars.calendars[NTH].team + "_sport_" + clientCalendars.calendars[NTH].sportID + "_footycalendar"
+                                },
+                                success: function(data, status, xhr) {
+                                    stopProgress()
+                                    location.reload()
+                                },
+                                error: function(xhr, status, error) {
+                                    stopProgress()
+                                    console.log(error)
+                                }
+                            })
+                        })
+
+                    } else { // DOES NOT HAVE LIVE CALENDAR
+
+                        $(`#calendar-live-btn${i}`).css("background-color", "green")
+                        $(`#calendar-live-btn${i}`).hover(function() {
+                            $(this).css("filter", "brightness(70%)")
+                        }, function() {
+                            $(this).css("filter", "brightness(100%)")
+                        })
+                        $(`#force-refresh-btn${i}`).prop("disabled", "true")
+                        $(`#calendar-live-btn${i} div`).text("ADD MATCHES TO GOOGLE CALENDAR")
+
+
+                        $(`#calendar-live-btn${i}`).on('click', function() {
+                            const NTH = $(this).attr("data-n")
+                            startProgress()
+                            $.ajax({
+                                type: "POST",
+                                async: true,
+                                url: "/push-events",
+                                data: {
+                                    'team': clientCalendars.calendars[NTH].team,
+                                    'sportID': clientCalendars.calendars[NTH].sportID,
+                                    'selected_color': clientCalendars.calendars[NTH].selected_color
+                                },
+                                success: function(data, status, xhr) {
+                                    stopProgress()
+                                    location.reload()
+                                },
+                                error: function(xhr, status, error) {
+                                    $("#result").css("color", "rgb(255, 94, 94)")
+                                    $("#result").text("Error: " + xhr.responseText)
+                                    displayResult()
+                                    stopProgress()
+                                }
+                            })
+                        })
+
+                    }
+                    callback()
+                },
+                error: function(xhr, status, error) {
+                    console.log(error)
+                    callback()
+                }
+            })
+
+        })
+    }
+
+    var sportsObject = []
+    var colorsObject = []
+
+    async function sportsJSONLoader(url) {
+
+        await $.getJSON(url, async function(data) {
+            await $.each(data, function(key, entry) {
+                sportsObject.push({
+                    sportID: entry.id,
+                    sportName: entry.name
+                })
+            })
+        })
+
+    }
+
+    async function colorsJSONLoader(url) {
+
+        await $.getJSON(url, async function(data) {
+            await $.each(data, function(key, entry) {
+                colorsObject.push({
+                    color_id: entry.color_id,
+                    color_name: entry.color_name,
+                    hexcode: entry.hexcode
+                })
+            })
+        })
+
+    }
+
+    function premiumFill(premiumStatus) {
+        $(".container").append(`
+    <table class="bottom-table">
+        <colgroup>
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+            </colgroup>
+            <tr>
+                <td colspan="8">
+                  <button id="calendar-add-btn" class="btn" data-n="${clientCalendars.calendars.length}" type="button">
+                        <img class="logo" alt="add_button_img" src="img/add.png"><div class="span1">ADD ANOTHER CALENDAR</div>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    `)
+        $(`#calendar-add-btn`).on('click', function() {
+            $(this).css("display", "none")
+            const i = $(this).attr("data-n")
+            startProgress()
+            if (premiumStatus) {
+                $(".container").append(`
+        <table class="calendar_board${i}">
+            <colgroup>
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+                <col width="12.5%">
+            </colgroup>
+            <tr>
+                <td colspan="5">
+                    <input class="gen-text dash-field2 favorite-team team" id="team${i}" data-n="${i}" class="" type="text" placeholder="Favorite Team / Competition">
+                </td>
+                <td colspan="3">
+                    <button id="team-search-btn${i}" class="btn" data-n="${i}" type="button">
+                        <img class="logo" alt="team_search_button_img" src="img/search.png"><div class="span1">SEARCH</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <select style="color: rgb(0, 0, 0); font-weight: bold;" class="dash-field2 gen-text selector" id="sport-selector${i}" data-n="${i}" title="sport-selector">
+                    </select>
+                </td>
+            
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <select style="color: white; font-weight: bold;" class="dash-field2 gen-text selector color-selector" id="color-selector${i}" data-n="${i}" title="color-selector">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <button id="save-btn${i}" class="btn save-btn" data-n="${i}" type="button" disabled>
+                        <img class="logo" alt="edit_button_img" src="img/save.png"><div class="span1">SAVE CALENDAR SETTINGS</div>
+                    </button>
+                </td>
+        </table>
+        `)
+
+                // SELECTOR FILL
+
+                const sport_dropdown = $(`#sport-selector${i}`)
+                sport_dropdown.empty()
+                for (var j = 0; j < sportsObject.length; j++) {
+                    sport_dropdown.append($('<option></option>').attr('value', sportsObject[j].sportID).text(sportsObject[j].sportName))
+                }
+
+                const color_dropdown = $(`#color-selector${i}`)
+                color_dropdown.empty()
+                for (var j = 0; j < colorsObject.length; j++) {
+                    color_dropdown.append($('<option></option>').attr('value', colorsObject[j].color_id).text(colorsObject[j].color_name).css("background-color", colorsObject[j].hexcode))
+                }
+
+                $(`#team-search-btn${i}`).on("click", async function(e) {
+                    const queryRes = await searchInit($(this).attr("data-n"))
+                })
+
+                $(`#color-selector${i}`).on("change", function(e) {
+                    $(this).css("background-color", $(this).find(":selected").css("background-color"))
+                })
+
+                $(`#team${i}`).on('input', function(e) {
+                    const NTH = $(this).attr("data-n")
+                    $(`#save-btn${NTH}`).prop("disabled", true)
+                })
+
+                $(`#sport-selector${i}`).on('change', function(e) {
+                    const NTH = $(this).attr("data-n")
+                    $(`#save-btn${NTH}`).prop("disabled", true)
+                })
+
+                $(`#save-btn${i}`).on('click', function() {
+                    const NTH = $(this).attr("data-n")
+                    startProgress()
+                    var team = $(`#team${NTH}`).val()
+                    var sportID = $(`#sport-selector${NTH}`).val()
+                    var selected_color = $(`#color-selector${NTH}`).val()
+                    $.ajax({
+                        type: "POST",
+                        url: "/insert_calendar",
+                        async: false,
+                        data: {
+                            'team': team,
+                            'sportID': sportID,
+                            'selected_color': selected_color
+                        },
+                        success: function(data, status, xhr) {
+                            $("#result").css("color", "rgb(144, 255, 110)")
+                            $("#result").text(xhr.responseText)
+                            displayResult()
+                            stopProgress()
+                            location.reload()
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText)
+                            $("#result").css("color", "rgb(255, 94, 94)")
+                            $("#result").text("Error: " + xhr.responseText)
+                            displayResult()
+                            stopProgress()
+                        }
+                    })
+                })
+
+            } else {
+                location.href = "/premium"
+            }
+            stopProgress()
+        })
+    }
+
+    $(document).ready(async function() {
+
+        startProgress()
+
+        await ajaxGetCalendarInfo()
+
+        await sportsJSONLoader('/js/event_lengths.json')
+
+        await colorsJSONLoader('/js/google_colors.json')
+
+        for (var i = 0; i < clientCalendars.calendars.length; i++) {
+            const sport_dropdown = $(`#sport-selector${i}`)
+            sport_dropdown.empty()
+            for (var j = 0; j < sportsObject.length; j++) {
+                sport_dropdown.append($('<option></option>').attr('value', sportsObject[j].sportID).text(sportsObject[j].sportName))
+            }
+            sport_dropdown.val(clientCalendars.calendars[i].sportID).change()
+
+            const color_dropdown = $(`#color-selector${i}`)
+            color_dropdown.empty()
+            for (var j = 0; j < colorsObject.length; j++) {
+                color_dropdown.append($('<option></option>').attr('value', colorsObject[j].color_id).text(colorsObject[j].color_name).css("background-color", colorsObject[j].hexcode))
+            }
+            color_dropdown.val(clientCalendars.calendars[i].selected_color).change()
+        }
+
+        $(`.save-btn`).prop("disabled", false)
+        if (clientCalendars.refresh_token == "undefined") {
+            $(".google-button-group").prop("disabled", "true")
+        }
+
+        await premiumFill((await ajaxGetPremium()).hasPremium)
+
+        await ajaxHasLiveCalendar(function() {
+            stopProgress()
+        })
+
+
+    })
+</script>
+
+</html>

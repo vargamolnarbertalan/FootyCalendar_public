@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>Donate | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+
+    <div class="container">
+        <div class="back-container">
+            <button class="btn" onclick="history.back()">BACK</button>
+        </div>
+        <h1>Your support is appreciated.</h1>
+        <div class="premium_desc">
+            <div style="text-align:justify;">Help me keep the lights on, tip me, buy me a coffee, make a donation. However you call it, it is never expected but always appreciated. We live in trying times so only spend money on Footy Calendar if you can afford it. 
+                <br>
+                <div style="font-weight: bold; margin: 10px 0px; text-align:justify;">Make sure to include your Footy username and/or Footy email in the donation note if you want to be invited to Premium access.
+                    After making a donation you will recieve a gift code that can be used to activate your Premium membership. This can take up to 1 day.
+                </div></div>
+        </div>
+        <table style="margin-top: 5px;">
+            <tr>
+                <td style="display: grid; justify-items: center;" colspan="2">
+                    <button id="revo-btn" class="btn" type="button" style="text-align: center;">
+                        <img class="logo" alt="donate_button_img" src="img/donate.png"><div class="span1">CREDIT / DEBIT CARD</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div style="margin-top: 10px;">You can either make a donation via credit/debit card by clicking the button above or use the QR code below if you wish to send from Revolut.</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img id="revoqr" src="img/revo_qr.png" alt="revolut_qr_code">
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <%- include('footer.ejs') %>
+        <div id="result"></div>
+</body>
+
+<script>
+    $(document).ready(function() {
+        $('#revo-btn').on('click', function() {
+            location.href = "https://revolut.me/vargamolnarb"
+        })
+    })
+</script>
+
+</html>

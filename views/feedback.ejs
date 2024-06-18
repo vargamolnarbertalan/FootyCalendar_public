@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>Feedback | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+    <div class="container">
+        <div class="back-container">
+            <button class="btn" onclick="history.back()">BACK</button>
+        </div>
+        <h1>Feedback</h1>
+        <form id="feedbackform">
+            <input class="gen-text non-table" type="text" id="title" placeholder="Title" required>
+            <textarea class="non-table" maxlength="2000" rows="10" cols="50" id="content" placeholder="Issues&#10;What were you doing when you ran into the error?&#10;Was there a message?&#10;What would be the expected behaviour?&#10;&#10;Feature requests&#10;What would be the feautue and how should it look and work?"
+                required></textarea>
+            <input class="gen-text non-table" type="text" id="username" value="<%=ejsdata.formname%>" placeholder="Email (optional)">
+            <button class="btn small-btn non-table" type="submit">Send feedback</button>
+        </form>
+
+    </div>
+
+    <%- include('footer.ejs') %>
+
+        <div id="result"><br></div>
+
+</body>
+
+<script>
+    $(document).ready(function() {
+
+        if( $('#username').val() != 'Anonymus' ){
+            $('#username').attr('disabled','true')
+        }
+
+        // When the form is submitted
+        $("#feedbackform").submit(function(event) {
+            startProgress()
+            event.preventDefault();
+            const title = $('#title').val()
+            const content = $('#content').val()
+            const username = $('#username').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/feedback-reg",
+                data: {
+                    'title': title,
+                    'content': content,
+                    'username': username
+                },
+                success: function(data, status, xhr) {
+                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                    $("#result").css("color", "rgb(144, 255, 110)")
+                    $("#result").text(xhr.responseText)
+                    displayResult()
+                    stopProgress()
+                        //history.back()
+                },
+                error: function(xhr, status, error) {
+                    $("#result").css("color", "rgb(255, 94, 94)")
+                    $("#result").text("Error: " + xhr.responseText)
+                    displayResult()
+                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                    stopProgress()
+                }
+            })
+        })
+    })
+</script>
+
+</html>

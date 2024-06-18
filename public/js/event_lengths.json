@@ -1,0 +1,15 @@
+[
+    { "id": 20, "length": 105, "name": "Football" },
+    { "id": 8, "length": 120, "name": "Basketball" },
+    { "id": 24, "length": 150, "name": "Hockey" },
+    { "id": 23, "length": 90, "name": "Handball" },
+    { "id": 38, "length": 90, "name": "Water polo" },
+    { "id": 37, "length": 90, "name": "Volleyball" },
+    { "id": 3, "length": 180, "name": "American football" },
+    { "id": 7, "length": 180, "name": "Baseball" },
+    { "id": 19, "length": 90, "name": "Floorball" },
+    { "id": 21, "length": 105, "name": "Futsal" },
+    { "id": 36, "length": 120, "name": "Tennis" },
+    { "id": 34, "length": 150, "name": "Snooker" },
+    { "id": 16, "length": 90, "name": "Darts" }
+]

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('header.ejs') %>
+        <title>Premium | Footy Calendar</title>
+</head>
+
+<body>
+    <div id="loadOverlay"></div>
+    <div class='progress' id='PreLoaderBar'>
+        <div class='indeterminate'></div>
+    </div>
+
+    <div class="container">
+        <div class="back-container">
+            <button class="btn" onclick="history.back()">BACK</button>
+        </div>
+        <h1>Footy Calendar premium</h1>
+        <div class="premium_desc">
+            <h2>Premium features:</h2>
+            <ul>
+                <li>Add unlimited number of calendars to your account and sync all of them with Google Calendar. Add your favourite club's teams in other sports too or even your national team as well!</li>
+
+                <li style="margin-top: 30px; color: grey">Future plan: Automatically get your events refreshed in Google Calendar!</li>
+                <li style="color: grey">Future plan: No ads even after they get added to Footy Calendar.</li>
+            </ul>
+            <div style="text-align:justify;">Right now Footy Premium is only available through code activation which you can get as a gift after making a donation (donation amount is up to you).
+                <br>
+                <div style="font-weight: bold; margin: 5px 0px; text-align:justify;">Make sure to include your Footy username and/or Footy email in the donation note!</div></div>
+        </div>
+
+        <table>
+            <tr>
+                <td colspan="2">
+                    <button id="donate-btn" class="btn" type="button" style="text-align: center;">
+                        <img class="logo" alt="donate_button_img" src="img/donate.png"><div class="span1">DONATE</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id="purchase-btn" disabled class="btn" class="btn_changing" type="button" style="text-align: center;">
+                        <img class="logo" alt="purchase_button_img" src="img/footy_calendar_keyart_gold.png"><div class="span1">PURCHASE PREMIUM NOW</div>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <hr class="divider">
+                    <div>Redeem voucher</div>
+                    <form id="codeform">
+                        <input class="gen-text non-table" type="input" id="code" placeholder="XXXX-XXXX-XXXX-XXXX" pattern="[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}" title="Code has to match the pattern!" required>
+                        <button class="btn small-btn non-table" type="submit">Activate</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    <%- include('footer.ejs') %>
+        <div id="result"></div>
+</body>
+
+<script>
+    $(document).ready(function() {
+
+        $('#donate-btn').on('click', function() {
+            location.href = "/donate"
+        })
+
+
+        $("#codeform").submit(function(event) {
+            startProgress()
+            event.preventDefault();
+            const code = $('#code').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/activate-code",
+                data: {
+                    'code': code
+                },
+                success: function(data, status, xhr) {
+                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                    $("#result").css("color", "rgb(144, 255, 110)")
+                    $("#result").text(xhr.responseText)
+                    stopProgress()
+                    displayResult()
+                    location.href = "/"
+                },
+                error: function(xhr, status, error) {
+                    $("#result").css("color", "rgb(255, 94, 94)")
+                    $("#result").text("Error: " + xhr.responseText)
+                    displayResult()
+                    console.log(`response status code: ${xhr.status} | response text: ${xhr.responseText}`)
+                    stopProgress()
+                }
+            })
+
+        })
+    })
+</script>
+
+</html>
